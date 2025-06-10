@@ -1,0 +1,48 @@
+.main-section{
+    height: 100vh;
+}
+
+.main-row{
+    height: 100vh;
+}
+
+.col-one{
+    background-color: #2196F3;
+    padding: 2.2em 1em 1em 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.col-two{
+    /* background-color: bisque; */
+    padding: 1.5em 1em 1em 1em;
+}
+
+#nav-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1em;
+}
+
+#nav-box>a{
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+}
+
+#logOutBtn{
+    border: none;
+    color: white;
+    background-color:#2196F3;
+}
+
+#dashboard-title-text{
+
+    font-weight: 900;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+}
