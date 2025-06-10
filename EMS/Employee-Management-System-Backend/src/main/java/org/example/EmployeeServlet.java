@@ -2,6 +2,7 @@ package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet("/employee/*")
+@MultipartConfig
 public class EmployeeServlet extends HttpServlet {
 
     @Override
@@ -187,6 +190,98 @@ public class EmployeeServlet extends HttpServlet {
                                                             "message", "internal server error!"));
             throw new RuntimeException(e);
         }
+    }
+
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        resp.setContentType("application/json");
+
+        String id = req.getParameter("id");
+        String name = req.getParameter("name");
+        String address = req.getParameter("address");
+        String phoneNo = req.getParameter("phoneNo");
+        String salary = req.getParameter("salary");
+        Part image = req.getPart("image");
+
+        String path;
+
+        if (image != null && image.getSize() > 0) {
+            // Get original filename
+            String fileName = image.getSubmittedFileName();
+            System.out.println("file name: "+fileName);
+
+            // Create unique filename to avoid conflicts
+            String fileExtension = fileName.substring(fileName.lastIndexOf("."));
+            System.out.println("extension: "+fileExtension);
+            String uniqueFileName = System.currentTimeMillis() + "_" + name + fileExtension;
+            System.out.println("unique fle name: "+uniqueFileName);
+
+            // Define upload directory (make sure this directory exists)
+            String uploadDir = getServletContext().getRealPath("/") + "uploads/images/";
+            System.out.println("dir path: "+uploadDir);
+            File uploadDirFile = new File(uploadDir);
+            if (!uploadDirFile.exists()) {
+                uploadDirFile.mkdirs(); // Create directory if it doesn't exist
+            }
+
+            // Full path where file will be saved
+            String fullPath = uploadDir + uniqueFileName;
+            System.out.println("full path: "+fullPath);
+
+            // Save file to disk
+            image.write(fullPath);
+
+            // Store relative path in database (what you'll save in DB)
+            path = "uploads/images/" + uniqueFileName;
+            System.out.println("database save path: "+path);
+
+            try {
+                BasicDataSource basicDataSource = (BasicDataSource) req.getServletContext().getAttribute("dataSource");
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement pst = connection.prepareStatement("insert into employee values(?,?,?,?,?,?)");
+                pst.setString(1,id);
+                pst.setString(2,name);
+                pst.setString(3,address);
+                pst.setString(4,phoneNo);
+                pst.setString(5,salary);
+                pst.setString(6,path);
+                int result = pst.executeUpdate();
+
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                if(result>0){
+                    resp.setStatus(HttpServletResponse.SC_OK);
+                    objectMapper.writeValue(resp.getWriter(),Map.of("code", "200",
+                                                                    "status", "ok",
+                                                                    "message", "success!"));
+                }
+                else{
+                    resp.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+                    objectMapper.writeValue(resp.getWriter(),Map.of("code", "417",
+                                                                    "status", "expectation failed",
+                                                                    "message", "failed to add employee!"));
+                }
+
+            }
+            catch (SQLException e) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.writeValue(resp.getWriter(),Map.of("code", "500",
+                                                                "status", "error",
+                                                                "message", "internal server error!"));
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPut(req, resp);
     }
 }
 
