@@ -1,0 +1,115 @@
+body{
+
+    overflow-x: hidden;
+}
+
+.sign-up-section{
+
+    padding-top: 7.6em;
+    padding-bottom: 7.6em;
+    /*background-color: crimson;*/
+}
+
+.form-box>input{
+    width: 370px;
+    border-color: rgba(169, 169, 169, 0.9);
+}
+
+.form-box>label{
+    color: black;
+    font-weight: 400;
+}
+
+#title{
+
+    margin-bottom: 1em;
+}
+
+#signInBtn{
+
+    margin-top: 1em;
+    width: 370px;
+}
+
+#signInText{
+
+    width: 400px;
+    text-align: center;
+    margin-top: 1.9em;
+    /*background-color: blue;*/
+}
+
+h1{
+    align-self: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+    transition-property: all;
+}
+
+h1:hover {
+    transform: scale(1.02);
+    letter-spacing: 1px;
+}
+
+h1>span{
+    color: #2196F3;
+    transition: color 0.5s ease;
+}
+
+h1>span:hover{
+    color: #3F51B5;
+}
+
+#sign-up-link{
+    text-decoration: none;
+    color: #2196F3;
+}
+
+#image-box{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#food-bucket-image{
+
+    width: 100%;
+}
+
+#inputFieldBox{
+
+    /*background-color: blue;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@media all and (max-width: 992px) {
+
+    #inputFieldBox{
+
+        /*background-color: blue;*/
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #food-bucket-image{
+
+        width: 70%;
+        margin-bottom: 1.3em;
+    }
+
+    .sign-up-section{
+
+        padding-top: 2em;
+        padding-bottom: 3em;
+        /*background-color: crimson;*/
+    }
+}
