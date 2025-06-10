@@ -24,7 +24,6 @@ public class DBCP implements ServletContextListener {
 
         ServletContext servletContext = sce.getServletContext();
         servletContext.setAttribute("dataSource",basicDataSource);
-        System.out.println("fuck");
     }
 
     @Override
@@ -35,8 +34,6 @@ public class DBCP implements ServletContextListener {
             BasicDataSource basicDataSource = (BasicDataSource) servletContext.getAttribute("dataSource");
             try {
                 basicDataSource.close();
-                Connection connection = basicDataSource.getConnection();
-                System.out.println("con: "+connection);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
