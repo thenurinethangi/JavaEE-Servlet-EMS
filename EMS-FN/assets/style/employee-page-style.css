@@ -1,0 +1,125 @@
+.main-section{
+    height: 100vh;
+}
+
+.main-row{
+    height: 100vh;
+
+}
+
+.col-one{
+    background-color: #2196F3;
+    padding: 2.2em 1em 1em 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+}
+
+.col-two{
+    /* background-color: bisque; */
+    padding: 1.5em 1em 1em 1.5em;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+#nav-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1em;
+}
+
+#nav-box>a{
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+}
+
+#logOutBtn{
+    border: none;
+    color: white;
+    background-color:#2196F3;
+}
+
+#employee-page-title-text{
+
+    font-weight: 900;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+}
+
+.form-box{
+    /* background-color: aqua; */
+    width: 300px;
+    margin-right: 2em;
+}
+
+#form-container{
+    /* background-color: red; */
+    margin-top: 1.5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    /* gap: 2em; */
+}
+
+.form-box>input{
+    border-color: rgba(0, 0, 0, 0.8);
+}
+
+.form-box>label{
+    color: rgba(0, 0, 0, 0.60);
+}
+
+#saveBtn{
+    background-color:#2196F3;
+    border-color: #2196F3;
+    color: white;
+}
+
+#updateBtn{
+    background-color:#AB47BC;
+    border-color: #AB47BC;
+    color: white;
+    outline: none;
+}
+
+#deleteBtn{
+    background-color:crimson;
+    color: white;
+}
+
+#viewBtn{
+    background-color:#66BB6A;
+    border-color: #66BB6A;
+    color: white;
+}
+
+#button-box{
+    margin-top: 0.8em;
+}
+
+#searcBar{
+    width: 450px;
+    margin-top: 3.3em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1em;
+}
+
+#searcBar>input{
+    border-radius: 15px;
+    height: 39px;
+    border-color: rgba(0, 0, 0, 0.6);
+}
+
+#employee-tbl{
+    margin-top: 0.7em;
+    margin-bottom: 3em;
+}
