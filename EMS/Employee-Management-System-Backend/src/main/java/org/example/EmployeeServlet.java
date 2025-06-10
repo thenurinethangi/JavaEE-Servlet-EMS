@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class EmployeeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         resp.setContentType("application/json");
+        String path = req.getPathInfo();
         Connection connection = null;
         try {
             BasicDataSource basicDataSource = (BasicDataSource) req.getServletContext().getAttribute("dataSource");
@@ -66,6 +68,51 @@ public class EmployeeServlet extends HttpServlet {
             }
 
         }
+        else if(path!=null){
+            String[] arr = path.split("/");
+            String id = arr[1];
+
+            try {
+                PreparedStatement pst = connection.prepareStatement("select * from employee where id = ?");
+                pst.setString(1,id);
+                ResultSet result = pst.executeQuery();
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                if(result.next()){
+
+                    Map<String,String> em = Map.of(
+                            "id",result.getString(1),
+                            "name",result.getString(2),
+                            "address",result.getString(3),
+                            "phoneNo",result.getString(4),
+                            "salary",String.valueOf(result.getDouble(5)),
+                            "image",result.getString(6)
+                    );
+
+                    resp.setStatus(HttpServletResponse.SC_OK);
+                    objectMapper.writeValue(resp.getWriter(), Map.of("code", "200",
+                            "status", "ok",
+                            "message", "success!",
+                            "data", em)
+                    );
+                }
+                else{
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    ObjectMapper objectMapper1 = new ObjectMapper();
+                    objectMapper1.writeValue(resp.getWriter(),Map.of("code", "400",
+                                                                    "status", "bad request",
+                                                                    "message", "user not found!"));
+                }
+
+            } catch (SQLException e) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.writeValue(resp.getWriter(), Map.of("code", "500",
+                                                                "status", "error",
+                                                                "message", "internal server error!"));
+                throw new RuntimeException(e);
+            }
+        }
         else {
             try {
                 PreparedStatement pst = connection.prepareStatement("select * from employee");
@@ -101,6 +148,7 @@ public class EmployeeServlet extends HttpServlet {
             }
         }
     }
+
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -141,3 +189,15 @@ public class EmployeeServlet extends HttpServlet {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
