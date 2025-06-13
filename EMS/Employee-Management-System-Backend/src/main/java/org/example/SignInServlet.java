@@ -58,6 +58,7 @@ public class SignInServlet extends HttpServlet {
                                                                 "status", "bad request",
                                                                 "message", "user not exist!"));
             }
+            connection.close();
 
         } catch (SQLException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

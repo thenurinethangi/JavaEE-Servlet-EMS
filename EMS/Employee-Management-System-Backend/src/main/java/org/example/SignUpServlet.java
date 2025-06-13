@@ -64,7 +64,7 @@ public class SignUpServlet extends HttpServlet {
                                                                 "status", "error",
                                                                 "message", "failed!"));
             }
-
+            connection.close();
         }
         catch (SQLException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

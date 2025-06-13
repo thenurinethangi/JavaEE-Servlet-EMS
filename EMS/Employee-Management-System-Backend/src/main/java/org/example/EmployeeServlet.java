@@ -150,6 +150,11 @@ public class EmployeeServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -182,6 +187,7 @@ public class EmployeeServlet extends HttpServlet {
                                                                 "status", "expectation failed",
                                                                 "message", "failed to delete employee!"));
             }
+            connection.close();
 
         } catch (SQLException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -208,32 +214,27 @@ public class EmployeeServlet extends HttpServlet {
         String path;
 
         if (image != null && image.getSize() > 0) {
-            // Get original filename
+
             String fileName = image.getSubmittedFileName();
             System.out.println("file name: "+fileName);
 
-            // Create unique filename to avoid conflicts
             String fileExtension = fileName.substring(fileName.lastIndexOf("."));
             System.out.println("extension: "+fileExtension);
             String uniqueFileName = System.currentTimeMillis() + "_" + name + fileExtension;
             System.out.println("unique fle name: "+uniqueFileName);
 
-            // Define upload directory (make sure this directory exists)
             String uploadDir = getServletContext().getRealPath("/") + "uploads/images/";
             System.out.println("dir path: "+uploadDir);
             File uploadDirFile = new File(uploadDir);
             if (!uploadDirFile.exists()) {
-                uploadDirFile.mkdirs(); // Create directory if it doesn't exist
+                uploadDirFile.mkdirs();
             }
 
-            // Full path where file will be saved
             String fullPath = uploadDir + uniqueFileName;
             System.out.println("full path: "+fullPath);
 
-            // Save file to disk
             image.write(fullPath);
 
-            // Store relative path in database (what you'll save in DB)
             path = "uploads/images/" + uniqueFileName;
             System.out.println("database save path: "+path);
 
@@ -263,6 +264,7 @@ public class EmployeeServlet extends HttpServlet {
                                                                     "status", "expectation failed",
                                                                     "message", "failed to add employee!"));
                 }
+                connection.close();
 
             }
             catch (SQLException e) {
