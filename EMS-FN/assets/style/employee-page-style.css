@@ -123,3 +123,18 @@
     margin-top: 0.7em;
     margin-bottom: 3em;
 }
+
+
+#employee-modal-body{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+#employee-modal-body>input{
+
+    width: 92%;
+}
